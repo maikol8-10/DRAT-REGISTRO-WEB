@@ -7,6 +7,7 @@ Panel web administrativo del sistema SICAF para el DRAT.
 - React
 - Vite
 - TypeScript
+- Tailwind CSS
 - React Router
 - Vitest
 

@@ -13,16 +13,16 @@ export function DashboardPage() {
         <div className="sync-status"><span /> Sincronizado · datos ficticios</div>
       </div>
       <div className="stats-grid">
-        {stats.map((stat) => <article className={`stat-card ${stat.tone}`} key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></article>)}
+        {stats.map((stat) => <article className={`stat-card ${stat.tone} transition-shadow hover:shadow-lg`} key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></article>)}
       </div>
       <div className="dashboard-grid">
-        <article className="panel">
+        <article className="panel transition-shadow hover:shadow-lg">
           <div className="panel-heading"><div><p className="eyebrow">ACTIVIDAD RECIENTE</p><h2>Últimos movimientos</h2></div><span className="demo-badge">Demostración</span></div>
           <div className="activity-row"><span className="activity-icon">IN</span><div><strong>Ingreso de funcionario</strong><small>María Rodríguez · Vehículo ABC-123</small></div><time>08:42</time></div>
           <div className="activity-row"><span className="activity-icon out">SA</span><div><strong>Salida institucional</strong><small>Unidad 02 · Destino San José</small></div><time>08:31</time></div>
           <div className="activity-row"><span className="activity-icon visit">VI</span><div><strong>Visitante registrado</strong><small>Carlos Méndez · Gafete 014</small></div><time>08:20</time></div>
         </article>
-        <article className="panel quick-panel">
+        <article className="panel quick-panel transition-shadow hover:shadow-lg">
           <p className="eyebrow">ACCESOS RÁPIDOS</p><h2>Gestión administrativa</h2>
           <p>Utilice el menú lateral para ingresar a los módulos disponibles según su rol.</p>
           <div className="role-note"><strong>Estructura protegida</strong><span>Rol activo: ADMINISTRADOR</span></div>

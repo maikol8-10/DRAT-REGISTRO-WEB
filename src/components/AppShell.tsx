@@ -5,8 +5,8 @@ import { modules } from '../config/modules';
 
 export function AppShell() {
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
+    <div className="app-shell bg-slate-50 text-slate-900 antialiased">
+      <aside className="sidebar shadow-xl">
         <div className="brand">
           <span className="brand-mark">S</span>
           <span><strong>SICAF</strong><small>Panel administrativo</small></span>
@@ -24,7 +24,7 @@ export function AppShell() {
         </div>
       </aside>
       <main className="main-content">
-        <header className="topbar">
+        <header className="topbar shadow-sm">
           <div><span className="environment-dot" /> Entorno de demostración</div>
           <div className="institution">DRAT · Control institucional</div>
         </header>
