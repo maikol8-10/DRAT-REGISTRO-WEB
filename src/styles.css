@@ -40,6 +40,8 @@ h2 { margin-bottom: 10px; color: #163243; font-size: 19px; }
 .page-heading p, .module-page > p { color: #647985; }
 .sync-status { padding: 10px 14px; border: 1px solid #cfe8db; border-radius: 999px; color: #087344; background: #eaf6f0; font-size: 11px; font-weight: 750; }
 .sync-status span { width: 7px; height: 7px; display: inline-block; margin-right: 5px; border-radius: 50%; background: #009456; }
+.sync-status.offline { border-color: #ead7ae; color: #8a6000; background: #fff3d5; }
+.sync-status.offline span { background: #d39300; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 34px; }
 .stat-card { position: relative; overflow: hidden; display: flex; flex-direction: column; padding: 23px; border: 1px solid #dce6ea; border-radius: 16px; background: white; box-shadow: 0 8px 30px rgba(7,61,87,.055); }
 .stat-card::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 4px; background: #78909c; }

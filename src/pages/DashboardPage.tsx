@@ -1,3 +1,5 @@
+import { ApiStatus } from '../components/ApiStatus';
+
 const stats = [
   { value: '38', label: 'Personas presentes', tone: 'blue' },
   { value: '12', label: 'Vehículos dentro', tone: 'green' },
@@ -10,7 +12,7 @@ export function DashboardPage() {
     <section className="page">
       <div className="page-heading">
         <div><p className="eyebrow">RESUMEN GENERAL</p><h1>Buenos días, Administrador</h1><p>Estado actual de la garita principal del DRAT.</p></div>
-        <div className="sync-status"><span /> Sincronizado · datos ficticios</div>
+        <ApiStatus />
       </div>
       <div className="stats-grid">
         {stats.map((stat) => <article className={`stat-card ${stat.tone} transition-shadow hover:shadow-lg`} key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></article>)}

@@ -20,6 +20,7 @@ npm.cmd install
 ## Ejecución local
 
 ```powershell
+Copy-Item .env.example .env
 npm.cmd run dev
 ```
 
@@ -64,3 +65,11 @@ El 7 de septiembre de 2026 se verificó la base web con los siguientes resultado
 - Consola del navegador comprobada sin errores ni advertencias.
 
 El desarrollo se realiza en la rama `dev`; `main` se reserva para versiones estables.
+
+## Comunicación con el backend
+
+La variable `VITE_API_URL` define la dirección del backend y utiliza `http://localhost:3000` en desarrollo. La pantalla inicial consulta `GET /health` y muestra el estado de la API. El archivo `.env` está excluido de Git y `.env.example` no contiene secretos.
+
+La arquitectura completa y las comunicaciones se encuentran en el repositorio `DRAT-REGISTRO-API`, dentro de `docs/architecture.md`, y en el [diagrama editable de FigJam](https://www.figma.com/board/JniN3acMMwkc28n4GDimNq).
+
+El 7 de septiembre de 2026 se verificaron ESLint, pruebas y compilación de producción después de incorporar la comunicación con el backend.
