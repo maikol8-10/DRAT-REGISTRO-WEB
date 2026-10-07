@@ -30,7 +30,7 @@ export function AppShell() {
         </nav>
         <div className="sidebar-user">
           <span className="avatar">AD</span>
-          <span><strong>{session.user.name}</strong><small>{session.user.role}</small></span>
+          <span className="sidebar-user-details"><strong>{session.user.name}</strong><small>{session.user.role}</small></span>
           <button className="logout-button" type="button" onClick={handleLogout}>Salir</button>
         </div>
       </aside>
