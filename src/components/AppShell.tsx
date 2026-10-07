@@ -1,9 +1,18 @@
-import { NavLink, Outlet } from 'react-router';
+import { Navigate, NavLink, Outlet, useNavigate } from 'react-router';
 
-import { currentUser } from '../auth/session';
+import { useAuth } from '../auth/AuthContext';
 import { modules } from '../config/modules';
 
 export function AppShell() {
+  const { session, logout } = useAuth();
+  const navigate = useNavigate();
+  if (!session) return <Navigate to="/login" replace />;
+
+  function handleLogout() {
+    logout();
+    navigate('/login', { replace: true });
+  }
+
   return (
     <div className="app-shell bg-slate-50 text-slate-900 antialiased">
       <aside className="sidebar shadow-xl">
@@ -20,7 +29,8 @@ export function AppShell() {
         </nav>
         <div className="sidebar-user">
           <span className="avatar">AD</span>
-          <span><strong>{currentUser.name}</strong><small>{currentUser.role}</small></span>
+          <span><strong>{session.user.name}</strong><small>{session.user.role}</small></span>
+          <button className="logout-button" type="button" onClick={handleLogout}>Salir</button>
         </div>
       </aside>
       <main className="main-content">

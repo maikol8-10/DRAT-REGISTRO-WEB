@@ -24,7 +24,19 @@ Copy-Item .env.example .env
 npm.cmd run dev
 ```
 
-Abra la dirección que muestra Vite, normalmente `http://localhost:5173`.
+Abra la dirección que muestra Vite, normalmente `http://localhost:5173`. Si no existe una sesión
+activa, el panel redirige a `/login`.
+
+## Autenticación y usuarios
+
+- El inicio de sesión utiliza `POST /api/v1/auth/login`.
+- El token JWT se conserva solo durante la sesión de la pestaña mediante `sessionStorage`.
+- Cerrar sesión elimina el token local.
+- Administración permite crear usuarios, asignar los roles `ADMINISTRADOR` y `GUARDA`, y activar
+  o desactivar cuentas.
+- Un administrador no puede desactivar su propia cuenta ni retirar su propio rol.
+
+La API y PostgreSQL deben estar en ejecución antes de iniciar sesión.
 
 ## Validaciones
 
@@ -38,13 +50,13 @@ npm.cmd run build
 
 ```text
 src/
-  auth/          Sesión simulada y reglas de autorización
+  auth/          Sesión JWT y reglas de autorización
   components/    Estructura visual y componentes reutilizables
   config/        Definición de módulos y navegación
   pages/         Pantallas asociadas a las rutas
 ```
 
-La sesión actual es ficticia y utiliza el rol `ADMINISTRADOR`. El componente `ProtectedRoute` y la función `canAccess` dejan preparada la incorporación de autenticación y permisos reales en el Entregable 3.
+El componente `ProtectedRoute` verifica la sesión y el rol antes de mostrar cada módulo.
 
 ## Alcance de la base web
 
