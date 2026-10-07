@@ -1,6 +1,7 @@
 import { Navigate, NavLink, Outlet, useNavigate } from 'react-router';
 
 import { useAuth } from '../auth/AuthContext';
+import { canAccess } from '../auth/authorization';
 import { modules } from '../config/modules';
 
 export function AppShell() {
@@ -21,7 +22,7 @@ export function AppShell() {
           <span><strong>SICAF</strong><small>Panel administrativo</small></span>
         </div>
         <nav className="main-nav" aria-label="Navegación principal">
-          {modules.map((module) => (
+          {modules.filter((module) => canAccess(session.user.role, module.allowedRoles)).map((module) => (
             <NavLink key={module.path} to={module.path} end={module.path === '/'}>
               <span className="nav-icon" aria-hidden="true">{module.shortLabel}</span>{module.label}
             </NavLink>
