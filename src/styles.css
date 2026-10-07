@@ -19,6 +19,8 @@ a { color: inherit; }
 .brand small, .sidebar-user small { margin-top: 3px; color: #b8cbd3; font-size: 11px; }
 .brand-mark { width: 42px; height: 42px; display: inline-grid; flex: 0 0 auto; place-items: center; border-radius: 12px; color: white; background: #009456; font-size: 25px; font-weight: 900; font-style: italic; }
 .brand-mark.large { width: 64px; height: 64px; margin-bottom: 12px; border-radius: 18px; font-size: 36px; }
+.brand-logo { width: 54px; height: 54px; display: grid; flex: 0 0 auto; place-items: center; overflow: hidden; border-radius: 12px; background: #f4f7f8; }
+.brand-logo img { width: 100%; height: 100%; object-fit: contain; }
 .main-nav { display: grid; gap: 7px; margin-top: 28px; }
 .main-nav a { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 11px; color: #d8e5e9; text-decoration: none; font-size: 14px; font-weight: 650; }
 .main-nav a:hover { background: rgba(255,255,255,.07); }
@@ -65,6 +67,7 @@ h2 { margin-bottom: 10px; color: #163243; font-size: 19px; }
 .logout-button { margin-left: auto; padding: 6px 9px; border: 1px solid rgba(255,255,255,.2); border-radius: 7px; color: #fff; background: transparent; cursor: pointer; font-size: 10px; }
 .login-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: linear-gradient(135deg, #eaf6f0, #e8f1f8); }
 .login-card { width: min(430px, 100%); padding: 42px; border: 1px solid #dce6ea; border-radius: 20px; background: #fff; box-shadow: 0 18px 55px rgba(7,61,87,.14); }
+.login-logo { width: 150px; height: auto; display: block; margin: 0 0 24px; }
 .login-card > p:not(.eyebrow) { color: #647985; line-height: 1.55; }
 .form-grid { display: grid; gap: 15px; }
 .form-grid label { display: grid; gap: 7px; color: #365361; font-size: 12px; font-weight: 750; }

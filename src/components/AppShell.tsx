@@ -18,7 +18,7 @@ export function AppShell() {
     <div className="app-shell bg-slate-50 text-slate-900 antialiased">
       <aside className="sidebar shadow-xl">
         <div className="brand">
-          <span className="brand-mark">S</span>
+          <span className="brand-logo"><img src="/senara-logo.png" alt="SENARA" /></span>
           <span><strong>SICAF</strong><small>Panel administrativo</small></span>
         </div>
         <nav className="main-nav" aria-label="Navegación principal">

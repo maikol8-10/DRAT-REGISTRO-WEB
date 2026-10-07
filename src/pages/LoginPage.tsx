@@ -34,7 +34,7 @@ export function LoginPage() {
   return (
     <main className="login-page">
       <section className="login-card">
-        <span className="brand-mark large">S</span>
+        <img className="login-logo" src="/senara-logo.png" alt="SENARA · Acceso institucional" />
         <p className="eyebrow">DRAT · CONTROL INSTITUCIONAL</p>
         <h1>Ingresar a SICAF</h1>
         <p>Utilice las credenciales asignadas por la administración.</p>
