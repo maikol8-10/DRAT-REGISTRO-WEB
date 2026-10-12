@@ -8,6 +8,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { ModulePage } from './pages/ModulePage';
 import { LoginPage } from './pages/LoginPage';
 import { UsersPage } from './pages/UsersPage';
+import { EmployeesPage } from './pages/EmployeesPage';
 
 const pageContent = {
   '/administracion': ['CATÁLOGOS DEL SISTEMA', 'Administración', 'Gestión de usuarios, funcionarios, vehículos y configuraciones generales.'],
@@ -23,6 +24,7 @@ export function App() {
       <Route element={<AppShell />}>
         <Route index element={<ProtectedRoute allowedRoles={modules[0].allowedRoles}><DashboardPage /></ProtectedRoute>} />
         <Route path="/administracion" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><UsersPage /></ProtectedRoute>} />
+        <Route path="/administracion/funcionarios" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><EmployeesPage /></ProtectedRoute>} />
         {modules.slice(2).map((module) => {
           const [eyebrow, title, description] = pageContent[module.path as keyof typeof pageContent];
           return <Route key={module.path} path={module.path} element={<ProtectedRoute allowedRoles={module.allowedRoles}><ModulePage eyebrow={eyebrow} title={title} description={description} /></ProtectedRoute>} />;

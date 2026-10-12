@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
 
 import { useAuth } from '../auth/AuthContext';
+import { AdministrationNav } from '../components/AdministrationNav';
 import { createUser, getUsers, updateUser, type UserRecord } from '../services/api';
 import type { Role } from '../types/auth';
 
@@ -61,6 +62,7 @@ export function UsersPage() {
 
   return (
     <section className="page users-page">
+      <AdministrationNav />
       <p className="eyebrow">SEGURIDAD Y ACCESO</p>
       <h1>Usuarios y roles</h1>
       <p>Administre las cuentas autorizadas para utilizar SICAF.</p>

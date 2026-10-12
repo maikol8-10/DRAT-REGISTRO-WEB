@@ -25,6 +25,17 @@ export interface UserRecord {
   updatedAt: string;
 }
 
+export interface EmployeeRecord {
+  id: string;
+  identification: string;
+  name: string;
+  department: string;
+  position: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 async function apiRequest<T>(path: string, init: RequestInit = {}, token?: string): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body) headers.set('Content-Type', 'application/json');
@@ -61,6 +72,35 @@ export async function createUser(
 
 export async function updateUser(token: string, id: string, input: Partial<Pick<UserRecord, 'role' | 'active'>>) {
   const response = await apiRequest<{ data: UserRecord }>(`/api/v1/users/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(input),
+  }, token);
+  return response.data;
+}
+
+export async function getEmployees(token: string, search = '') {
+  const query = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : '';
+  const response = await apiRequest<{ data: EmployeeRecord[] }>(`/api/v1/catalogs/employees${query}`, {}, token);
+  return response.data;
+}
+
+export async function createEmployee(
+  token: string,
+  input: Pick<EmployeeRecord, 'identification' | 'name' | 'department' | 'position'>,
+) {
+  const response = await apiRequest<{ data: EmployeeRecord }>('/api/v1/catalogs/employees', {
+    method: 'POST',
+    body: JSON.stringify(input),
+  }, token);
+  return response.data;
+}
+
+export async function updateEmployee(
+  token: string,
+  id: string,
+  input: Partial<Pick<EmployeeRecord, 'identification' | 'name' | 'department' | 'position' | 'active'>>,
+) {
+  const response = await apiRequest<{ data: EmployeeRecord }>(`/api/v1/catalogs/employees/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(input),
   }, token);

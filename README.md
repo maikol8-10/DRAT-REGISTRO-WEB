@@ -34,6 +34,7 @@ activa, el panel redirige a `/login`.
 - Cerrar sesión elimina el token local.
 - Administración permite crear usuarios, asignar los roles `ADMINISTRADOR` y `GUARDA`, y activar
   o desactivar cuentas.
+- La pestaña Funcionarios permite registrar, buscar, editar, activar y desactivar personal institucional.
 - Un administrador no puede desactivar su propia cuenta ni retirar su propio rol.
 
 La API y PostgreSQL deben estar en ejecución antes de iniciar sesión.
