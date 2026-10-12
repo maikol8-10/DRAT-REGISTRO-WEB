@@ -36,6 +36,22 @@ export interface EmployeeRecord {
   updatedAt: string;
 }
 
+export type FuelType = 'GASOLINA' | 'DIESEL' | 'ELECTRICO' | 'HIBRIDO' | 'OTRO';
+
+export interface InstitutionalVehicleRecord {
+  id: string;
+  plate: string;
+  assetCode: string;
+  brand: string;
+  model: string;
+  year: number;
+  fuelType: FuelType;
+  ownershipType: 'INSTITUCIONAL';
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 async function apiRequest<T>(path: string, init: RequestInit = {}, token?: string): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body) headers.set('Content-Type', 'application/json');
@@ -103,6 +119,33 @@ export async function updateEmployee(
   const response = await apiRequest<{ data: EmployeeRecord }>(`/api/v1/catalogs/employees/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(input),
+  }, token);
+  return response.data;
+}
+
+export async function getInstitutionalVehicles(token: string, search = '') {
+  const query = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : '';
+  const response = await apiRequest<{ data: InstitutionalVehicleRecord[] }>(`/api/v1/catalogs/institutional-vehicles${query}`, {}, token);
+  return response.data;
+}
+
+export async function createInstitutionalVehicle(
+  token: string,
+  input: Pick<InstitutionalVehicleRecord, 'plate' | 'assetCode' | 'brand' | 'model' | 'year' | 'fuelType'>,
+) {
+  const response = await apiRequest<{ data: InstitutionalVehicleRecord }>('/api/v1/catalogs/institutional-vehicles', {
+    method: 'POST', body: JSON.stringify(input),
+  }, token);
+  return response.data;
+}
+
+export async function updateInstitutionalVehicle(
+  token: string,
+  id: string,
+  input: Partial<Pick<InstitutionalVehicleRecord, 'assetCode' | 'brand' | 'model' | 'year' | 'fuelType' | 'active'>>,
+) {
+  const response = await apiRequest<{ data: InstitutionalVehicleRecord }>(`/api/v1/catalogs/institutional-vehicles/${id}`, {
+    method: 'PATCH', body: JSON.stringify(input),
   }, token);
   return response.data;
 }

@@ -35,6 +35,7 @@ activa, el panel redirige a `/login`.
 - Administración permite crear usuarios, asignar los roles `ADMINISTRADOR` y `GUARDA`, y activar
   o desactivar cuentas.
 - La pestaña Funcionarios permite registrar, buscar, editar, activar y desactivar personal institucional.
+- La pestaña Vehículos institucionales permite registrar, buscar, editar, activar y desactivar la flotilla, con placa única y tipo institucional visible.
 - Un administrador no puede desactivar su propia cuenta ni retirar su propio rol.
 
 La API y PostgreSQL deben estar en ejecución antes de iniciar sesión.
