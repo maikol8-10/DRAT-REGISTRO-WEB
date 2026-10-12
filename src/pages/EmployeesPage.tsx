@@ -46,7 +46,11 @@ export function EmployeesPage() {
     setMessage('');
     try {
       if (editingId) {
-        await updateEmployee(token, editingId, form);
+        await updateEmployee(token, editingId, {
+          name: form.name,
+          department: form.department,
+          position: form.position,
+        });
         setMessage('Funcionario actualizado correctamente.');
       } else {
         await createEmployee(token, form);
@@ -96,7 +100,8 @@ export function EmployeesPage() {
       <div className="users-layout">
         <form className="panel form-grid" onSubmit={handleSubmit}>
           <h2>{editingId ? 'Editar funcionario' : 'Registrar funcionario'}</h2>
-          <label>Identificación<input value={form.identification} onChange={(event) => setForm({ ...form, identification: event.target.value })} minLength={5} maxLength={20} required /></label>
+          <label>Identificación<input value={form.identification} onChange={(event) => setForm({ ...form, identification: event.target.value })} minLength={5} maxLength={20} disabled={editingId !== null} required /></label>
+          {editingId && <small>La identificación es única y no puede modificarse.</small>}
           <label>Nombre completo<input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} minLength={2} required /></label>
           <label>Departamento<input value={form.department} onChange={(event) => setForm({ ...form, department: event.target.value })} minLength={2} required /></label>
           <label>Puesto<input value={form.position} onChange={(event) => setForm({ ...form, position: event.target.value })} minLength={2} required /></label>

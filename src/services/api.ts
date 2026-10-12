@@ -98,7 +98,7 @@ export async function createEmployee(
 export async function updateEmployee(
   token: string,
   id: string,
-  input: Partial<Pick<EmployeeRecord, 'identification' | 'name' | 'department' | 'position' | 'active'>>,
+  input: Partial<Pick<EmployeeRecord, 'name' | 'department' | 'position' | 'active'>>,
 ) {
   const response = await apiRequest<{ data: EmployeeRecord }>(`/api/v1/catalogs/employees/${id}`, {
     method: 'PATCH',
