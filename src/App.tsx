@@ -11,6 +11,7 @@ import { UsersPage } from './pages/UsersPage';
 import { EmployeesPage } from './pages/EmployeesPage';
 import { InstitutionalVehiclesPage } from './pages/InstitutionalVehiclesPage';
 import { PrivateVehiclesPage } from './pages/PrivateVehiclesPage';
+import { NfcTagsPage } from './pages/NfcTagsPage';
 
 const pageContent = {
   '/administracion': ['CATÁLOGOS DEL SISTEMA', 'Administración', 'Gestión de usuarios, funcionarios, vehículos y configuraciones generales.'],
@@ -29,6 +30,7 @@ export function App() {
         <Route path="/administracion/funcionarios" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><EmployeesPage /></ProtectedRoute>} />
         <Route path="/administracion/vehiculos-institucionales" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><InstitutionalVehiclesPage /></ProtectedRoute>} />
         <Route path="/administracion/vehiculos-particulares" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><PrivateVehiclesPage /></ProtectedRoute>} />
+        <Route path="/administracion/tags-nfc" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><NfcTagsPage /></ProtectedRoute>} />
         {modules.slice(2).map((module) => {
           const [eyebrow, title, description] = pageContent[module.path as keyof typeof pageContent];
           return <Route key={module.path} path={module.path} element={<ProtectedRoute allowedRoles={module.allowedRoles}><ModulePage eyebrow={eyebrow} title={title} description={description} /></ProtectedRoute>} />;

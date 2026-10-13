@@ -37,6 +37,7 @@ activa, el panel redirige a `/login`.
 - La pestaña Funcionarios permite registrar, buscar, editar, activar y desactivar personal institucional.
 - La pestaña Vehículos institucionales permite registrar, buscar, editar, activar y desactivar la flotilla, con placa única y tipo institucional visible.
 - La pestaña Vehículos particulares permite asociar varias placas a un funcionario activo, consultar al propietario habitual, reasignar y activar o desactivar el vehículo.
+- La pestaña TAG NFC permite asociar un código único a un funcionario activo, reasignarlo y cambiar su estado.
 - Un administrador no puede desactivar su propia cuenta ni retirar su propio rol.
 
 La API y PostgreSQL deben estar en ejecución antes de iniciar sesión.

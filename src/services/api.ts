@@ -66,6 +66,16 @@ export interface PrivateVehicleRecord {
   updatedAt: string;
 }
 
+export interface NfcTagRecord {
+  id: string;
+  code: string;
+  employeeId: string;
+  active: boolean;
+  employee: Pick<EmployeeRecord, 'id' | 'identification' | 'name' | 'department' | 'position' | 'active'>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 async function apiRequest<T>(path: string, init: RequestInit = {}, token?: string): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body) headers.set('Content-Type', 'application/json');
@@ -188,5 +198,20 @@ export async function updatePrivateVehicle(
   const response = await apiRequest<{ data: PrivateVehicleRecord }>(`/api/v1/catalogs/private-vehicles/${id}`, {
     method: 'PATCH', body: JSON.stringify(input),
   }, token);
+  return response.data;
+}
+
+export async function getNfcTags(token: string) {
+  const response = await apiRequest<{ data: NfcTagRecord[] }>('/api/v1/catalogs/nfc-tags', {}, token);
+  return response.data;
+}
+
+export async function createNfcTag(token: string, input: { code: string; employeeId: string }) {
+  const response = await apiRequest<{ data: NfcTagRecord }>('/api/v1/catalogs/nfc-tags', { method: 'POST', body: JSON.stringify(input) }, token);
+  return response.data;
+}
+
+export async function updateNfcTag(token: string, id: string, input: { employeeId?: string; active?: boolean }) {
+  const response = await apiRequest<{ data: NfcTagRecord }>(`/api/v1/catalogs/nfc-tags/${id}`, { method: 'PATCH', body: JSON.stringify(input) }, token);
   return response.data;
 }
