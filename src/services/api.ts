@@ -52,6 +52,20 @@ export interface InstitutionalVehicleRecord {
   updatedAt: string;
 }
 
+export interface PrivateVehicleRecord {
+  id: string;
+  plate: string;
+  brand: string;
+  model: string;
+  color: string;
+  ownerEmployeeId: string;
+  ownershipType: 'PARTICULAR';
+  active: boolean;
+  owner: Pick<EmployeeRecord, 'id' | 'identification' | 'name' | 'department' | 'active'>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 async function apiRequest<T>(path: string, init: RequestInit = {}, token?: string): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body) headers.set('Content-Type', 'application/json');
@@ -145,6 +159,33 @@ export async function updateInstitutionalVehicle(
   input: Partial<Pick<InstitutionalVehicleRecord, 'assetCode' | 'brand' | 'model' | 'year' | 'fuelType' | 'active'>>,
 ) {
   const response = await apiRequest<{ data: InstitutionalVehicleRecord }>(`/api/v1/catalogs/institutional-vehicles/${id}`, {
+    method: 'PATCH', body: JSON.stringify(input),
+  }, token);
+  return response.data;
+}
+
+export async function getPrivateVehicles(token: string, search = '') {
+  const query = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : '';
+  const response = await apiRequest<{ data: PrivateVehicleRecord[] }>(`/api/v1/catalogs/private-vehicles${query}`, {}, token);
+  return response.data;
+}
+
+export async function createPrivateVehicle(
+  token: string,
+  input: Pick<PrivateVehicleRecord, 'plate' | 'brand' | 'model' | 'color' | 'ownerEmployeeId'>,
+) {
+  const response = await apiRequest<{ data: PrivateVehicleRecord }>('/api/v1/catalogs/private-vehicles', {
+    method: 'POST', body: JSON.stringify(input),
+  }, token);
+  return response.data;
+}
+
+export async function updatePrivateVehicle(
+  token: string,
+  id: string,
+  input: Partial<Pick<PrivateVehicleRecord, 'brand' | 'model' | 'color' | 'ownerEmployeeId' | 'active'>>,
+) {
+  const response = await apiRequest<{ data: PrivateVehicleRecord }>(`/api/v1/catalogs/private-vehicles/${id}`, {
     method: 'PATCH', body: JSON.stringify(input),
   }, token);
   return response.data;
