@@ -15,6 +15,7 @@ export function NfcTagsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [search, setSearch] = useState('');
 
   async function reload() { setTags(await getNfcTags(token)); }
 
@@ -25,6 +26,9 @@ export function NfcTagsPage() {
   }, [token]);
 
   const availableEmployees = employees.filter((employee) => employee.active && (!tags.some((tag) => tag.employeeId === employee.id) || employee.id === form.employeeId));
+  const normalizedSearch = search.trim().toLocaleLowerCase('es');
+  const filteredTags = tags.filter((tag) => [tag.code, tag.employee?.name, tag.employee?.identification]
+    .some((value) => value?.toLocaleLowerCase('es').includes(normalizedSearch)));
 
   async function submit(event: FormEvent) {
     event.preventDefault(); setError(''); setMessage('');
@@ -70,7 +74,11 @@ export function NfcTagsPage() {
         {message && <p className="form-success">{message}</p>}{error && <p className="form-error" role="alert">{error}</p>}
       </form>
       <div className="panel employees-panel"><div className="panel-heading"><div><p className="eyebrow">TAGS REGISTRADOS</p><h2>Asociaciones</h2></div><span className="demo-badge">{tags.length} TOTAL</span></div>
-        {tags.length === 0 ? <p className="empty-list">No hay TAG NFC registrados.</p> : tags.map((tag) => <article className="employee-row" key={tag.id}>
+        <form className="catalog-search" onSubmit={(event) => event.preventDefault()}>
+          <input aria-label="Buscar TAG NFC" placeholder="Buscar por código, funcionario o identificación" value={search} onChange={(event) => setSearch(event.target.value)} />
+          {search && <button type="button" onClick={() => setSearch('')}>Limpiar</button>}
+        </form>
+        {tags.length === 0 ? <p className="empty-list">No hay TAG NFC registrados.</p> : filteredTags.length === 0 ? <p className="empty-list">No hay TAG NFC que coincidan con la búsqueda.</p> : filteredTags.map((tag) => <article className="employee-row" key={tag.id}>
           <div><strong>{tag.code}</strong><small>Identificador NFC</small></div><div><strong>{tag.employee?.name ?? 'Sin asignar'}</strong><small>{tag.employee?.identification ?? 'Disponible para asignación'}</small></div>
           <button className="secondary-action compact" type="button" onClick={() => { setEditingId(tag.id); setForm({ code: tag.code, employeeId: tag.employeeId ?? '' }); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{tag.employeeId ? 'Reasignar' : 'Asignar'}</button>
           {tag.employeeId && <button className="secondary-action compact" type="button" onClick={() => void unassign(tag)}>Liberar</button>}

@@ -21,6 +21,9 @@ export function LoginPage() {
     setLoading(true);
     try {
       const nextSession = await login(email, password);
+      if (nextSession.user.role !== 'ADMINISTRADOR') {
+        throw new Error('El panel web es de uso exclusivo para cuentas con rol Administrador. El personal de seguridad debe utilizar la aplicación móvil.');
+      }
       setAuthenticatedSession(nextSession);
       const destination = (location.state as { from?: string } | null)?.from ?? '/';
       navigate(destination, { replace: true });

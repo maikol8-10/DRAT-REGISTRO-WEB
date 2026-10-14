@@ -13,6 +13,12 @@ export function DepartmentsPage() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+
+  const normalizedSearch = search.trim().toLocaleLowerCase('es');
+  const filteredDepartments = departments.filter((department) =>
+    department.name.toLocaleLowerCase('es').includes(normalizedSearch),
+  );
 
   const load = useCallback(async () => {
     try { setDepartments(await getDepartments(token)); setError(''); }
@@ -81,7 +87,11 @@ export function DepartmentsPage() {
       </form>
       <div className="panel employees-panel">
         <div className="panel-heading"><div><p className="eyebrow">OPCIONES DISPONIBLES</p><h2>Departamentos registrados</h2></div><span className="demo-badge">{departments.length} TOTAL</span></div>
-        {loading ? <p>Cargando departamentos…</p> : departments.length === 0 ? <p className="empty-list">No hay departamentos registrados.</p> : departments.map((department) =>
+        <form className="catalog-search" onSubmit={(event) => event.preventDefault()}>
+          <input aria-label="Buscar departamentos" placeholder="Buscar por nombre del departamento" value={search} onChange={(event) => setSearch(event.target.value)} />
+          {search && <button type="button" onClick={() => setSearch('')}>Limpiar</button>}
+        </form>
+        {loading ? <p>Cargando departamentos…</p> : departments.length === 0 ? <p className="empty-list">No hay departamentos registrados.</p> : filteredDepartments.length === 0 ? <p className="empty-list">No hay departamentos que coincidan con la búsqueda.</p> : filteredDepartments.map((department) =>
           <article className="department-row" key={department.id}>
             <strong>{department.name}</strong>
             <button className="secondary-action compact" type="button" onClick={() => edit(department)}>Editar</button>

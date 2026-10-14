@@ -9,9 +9,9 @@ export interface AppModule {
 }
 
 export const modules: readonly AppModule[] = [
-  { path: '/', label: 'Inicio', shortLabel: 'IN', description: 'Resumen operativo del plantel', allowedRoles: ['ADMINISTRADOR', 'GUARDA'] },
+  { path: '/', label: 'Inicio', shortLabel: 'IN', description: 'Resumen operativo del plantel', allowedRoles: ['ADMINISTRADOR'] },
   { path: '/administracion', label: 'Administración', shortLabel: 'AD', description: 'Usuarios, funcionarios y catálogos', allowedRoles: ['ADMINISTRADOR'] },
-  { path: '/consultas', label: 'Consultas', shortLabel: 'CO', description: 'Búsqueda de personas y vehículos', allowedRoles: ['ADMINISTRADOR', 'GUARDA'] },
+  { path: '/consultas', label: 'Consultas', shortLabel: 'CO', description: 'Búsqueda de personas y vehículos', allowedRoles: ['ADMINISTRADOR'] },
   { path: '/aprobaciones', label: 'Aprobaciones', shortLabel: 'AP', description: 'Movimientos pendientes de revisión', allowedRoles: ['ADMINISTRADOR'] },
   { path: '/reportes', label: 'Reportes', shortLabel: 'RE', description: 'Informes por placa y persona', allowedRoles: ['ADMINISTRADOR'] },
 ] as const;

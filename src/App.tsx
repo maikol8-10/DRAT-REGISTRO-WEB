@@ -14,6 +14,7 @@ import { PrivateVehiclesPage } from './pages/PrivateVehiclesPage';
 import { NfcTagsPage } from './pages/NfcTagsPage';
 import { DepartmentsPage } from './pages/DepartmentsPage';
 import { InstitutionalTripsPage } from './pages/InstitutionalTripsPage';
+import { ApprovalsPage } from './pages/ApprovalsPage';
 
 const pageContent = {
   '/administracion': ['CATÁLOGOS DEL SISTEMA', 'Administración', 'Gestión de usuarios, funcionarios, vehículos y configuraciones generales.'],
@@ -27,17 +28,18 @@ export function App() {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route element={<AppShell />}>
-        <Route index element={<ProtectedRoute allowedRoles={modules[0].allowedRoles}><DashboardPage /></ProtectedRoute>} />
+        <Route index element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><DashboardPage /></ProtectedRoute>} />
         <Route path="/administracion" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><UsersPage /></ProtectedRoute>} />
         <Route path="/administracion/funcionarios" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><EmployeesPage /></ProtectedRoute>} />
         <Route path="/administracion/departamentos" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><DepartmentsPage /></ProtectedRoute>} />
         <Route path="/administracion/vehiculos-institucionales" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><InstitutionalVehiclesPage /></ProtectedRoute>} />
         <Route path="/administracion/vehiculos-particulares" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><PrivateVehiclesPage /></ProtectedRoute>} />
         <Route path="/administracion/tags-nfc" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><NfcTagsPage /></ProtectedRoute>} />
-        <Route path="/consultas" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR', 'GUARDA']}><InstitutionalTripsPage /></ProtectedRoute>} />
-        {modules.slice(2).filter((module) => module.path !== '/consultas').map((module) => {
+        <Route path="/consultas" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><InstitutionalTripsPage /></ProtectedRoute>} />
+        <Route path="/aprobaciones" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><ApprovalsPage /></ProtectedRoute>} />
+        {modules.slice(2).filter((module) => !['/consultas', '/aprobaciones'].includes(module.path)).map((module) => {
           const [eyebrow, title, description] = pageContent[module.path as keyof typeof pageContent];
-          return <Route key={module.path} path={module.path} element={<ProtectedRoute allowedRoles={module.allowedRoles}><ModulePage eyebrow={eyebrow} title={title} description={description} /></ProtectedRoute>} />;
+          return <Route key={module.path} path={module.path} element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><ModulePage eyebrow={eyebrow} title={title} description={description} /></ProtectedRoute>} />;
         })}
       </Route>
       <Route path="/sin-acceso" element={<AccessDeniedPage />} />
