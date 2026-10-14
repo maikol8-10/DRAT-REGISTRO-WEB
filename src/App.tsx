@@ -12,6 +12,7 @@ import { EmployeesPage } from './pages/EmployeesPage';
 import { InstitutionalVehiclesPage } from './pages/InstitutionalVehiclesPage';
 import { PrivateVehiclesPage } from './pages/PrivateVehiclesPage';
 import { NfcTagsPage } from './pages/NfcTagsPage';
+import { DepartmentsPage } from './pages/DepartmentsPage';
 
 const pageContent = {
   '/administracion': ['CATÁLOGOS DEL SISTEMA', 'Administración', 'Gestión de usuarios, funcionarios, vehículos y configuraciones generales.'],
@@ -28,6 +29,7 @@ export function App() {
         <Route index element={<ProtectedRoute allowedRoles={modules[0].allowedRoles}><DashboardPage /></ProtectedRoute>} />
         <Route path="/administracion" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><UsersPage /></ProtectedRoute>} />
         <Route path="/administracion/funcionarios" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><EmployeesPage /></ProtectedRoute>} />
+        <Route path="/administracion/departamentos" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><DepartmentsPage /></ProtectedRoute>} />
         <Route path="/administracion/vehiculos-institucionales" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><InstitutionalVehiclesPage /></ProtectedRoute>} />
         <Route path="/administracion/vehiculos-particulares" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><PrivateVehiclesPage /></ProtectedRoute>} />
         <Route path="/administracion/tags-nfc" element={<ProtectedRoute allowedRoles={['ADMINISTRADOR']}><NfcTagsPage /></ProtectedRoute>} />

@@ -36,6 +36,14 @@ export interface EmployeeRecord {
   updatedAt: string;
 }
 
+export interface DepartmentRecord {
+  id: string;
+  name: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type FuelType = 'GASOLINA' | 'DIESEL' | 'ELECTRICO' | 'HIBRIDO' | 'OTRO';
 
 export interface InstitutionalVehicleRecord {
@@ -121,6 +129,25 @@ export async function updateUser(token: string, id: string, input: Partial<Pick<
 export async function getEmployees(token: string, search = '') {
   const query = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : '';
   const response = await apiRequest<{ data: EmployeeRecord[] }>(`/api/v1/catalogs/employees${query}`, {}, token);
+  return response.data;
+}
+
+export async function getDepartments(token: string) {
+  const response = await apiRequest<{ data: DepartmentRecord[] }>('/api/v1/catalogs/departments', {}, token);
+  return response.data;
+}
+
+export async function createDepartment(token: string, input: { name: string }) {
+  const response = await apiRequest<{ data: DepartmentRecord }>('/api/v1/catalogs/departments', {
+    method: 'POST', body: JSON.stringify(input),
+  }, token);
+  return response.data;
+}
+
+export async function updateDepartment(token: string, id: string, input: { active: boolean }) {
+  const response = await apiRequest<{ data: DepartmentRecord }>(`/api/v1/catalogs/departments/${id}`, {
+    method: 'PATCH', body: JSON.stringify(input),
+  }, token);
   return response.data;
 }
 

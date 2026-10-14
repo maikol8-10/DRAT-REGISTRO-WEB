@@ -4,8 +4,10 @@ import { useAuth } from '../auth/AuthContext';
 import { AdministrationNav } from '../components/AdministrationNav';
 import {
   createEmployee,
+  getDepartments,
   getEmployees,
   updateEmployee,
+  type DepartmentRecord,
   type EmployeeRecord,
 } from '../services/api';
 
@@ -15,6 +17,7 @@ export function EmployeesPage() {
   const { session } = useAuth();
   const token = session?.token ?? '';
   const [employees, setEmployees] = useState<EmployeeRecord[]>([]);
+  const [departments, setDepartments] = useState<DepartmentRecord[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
@@ -34,8 +37,12 @@ export function EmployeesPage() {
   }, [token]);
 
   useEffect(() => {
-    getEmployees(token)
-      .then((data) => { setEmployees(data); setError(''); })
+    Promise.all([getEmployees(token), getDepartments(token)])
+      .then(([employeeData, departmentData]) => {
+        setEmployees(employeeData); setDepartments(departmentData); setError('');
+        const firstActive = departmentData.find((department) => department.active);
+        if (firstActive) setForm((current) => current.department ? current : { ...current, department: firstActive.name });
+      })
       .catch((reason: unknown) => setError(reason instanceof Error ? reason.message : 'No fue posible cargar los funcionarios'))
       .finally(() => setLoading(false));
   }, [token]);
@@ -56,7 +63,7 @@ export function EmployeesPage() {
         await createEmployee(token, form);
         setMessage('Funcionario creado correctamente.');
       }
-      setForm(emptyForm);
+      setForm({ ...emptyForm, department: departments.find((department) => department.active)?.name ?? '' });
       setEditingId(null);
       await loadEmployees(search);
     } catch (reason) {
@@ -103,10 +110,13 @@ export function EmployeesPage() {
           <label>Identificación<input value={form.identification} onChange={(event) => setForm({ ...form, identification: event.target.value })} minLength={5} maxLength={20} disabled={editingId !== null} required /></label>
           {editingId && <small>La identificación es única y no puede modificarse.</small>}
           <label>Nombre completo<input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} minLength={2} required /></label>
-          <label>Departamento<input value={form.department} onChange={(event) => setForm({ ...form, department: event.target.value })} minLength={2} required /></label>
+          <label>Departamento<select value={form.department} onChange={(event) => setForm({ ...form, department: event.target.value })} required>
+            <option value="" disabled>Seleccione un departamento</option>
+            {departments.filter((department) => department.active || department.name === form.department).map((department) => <option key={department.id} value={department.name}>{department.name}{department.active ? '' : ' (inactivo)'}</option>)}
+          </select></label>
           <label>Puesto<input value={form.position} onChange={(event) => setForm({ ...form, position: event.target.value })} minLength={2} required /></label>
           <button className="primary-action" type="submit">{editingId ? 'Guardar cambios' : 'Registrar funcionario'}</button>
-          {editingId && <button className="secondary-action" type="button" onClick={() => { setEditingId(null); setForm(emptyForm); }}>Cancelar edición</button>}
+          {editingId && <button className="secondary-action" type="button" onClick={() => { setEditingId(null); setForm({ ...emptyForm, department: departments.find((department) => department.active)?.name ?? '' }); }}>Cancelar edición</button>}
           {message && <p className="form-success">{message}</p>}
           {error && <p className="form-error" role="alert">{error}</p>}
         </form>
