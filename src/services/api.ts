@@ -92,6 +92,19 @@ export interface InstitutionalTripRecord {
   occupants: Pick<EmployeeRecord, 'id' | 'identification' | 'name' | 'department'>[];
 }
 
+export interface MovementHistoryRecord {
+  id: string;
+  type: 'FUNCIONARIO' | 'VEHICULO_PARTICULAR' | 'VEHICULO_INSTITUCIONAL' | 'VISITANTE';
+  state: 'INGRESO' | 'SALIDA';
+  subject: string;
+  identifier: string;
+  occurredAt: string;
+  source: string;
+  operatorName: string;
+  operatorEmail: string;
+  details: Record<string, unknown>;
+}
+
 async function apiRequest<T>(path: string, init: RequestInit = {}, token?: string): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body) headers.set('Content-Type', 'application/json');
@@ -264,6 +277,14 @@ export async function deleteNfcTag(token: string, id: string) {
 
 export async function getInstitutionalTrips(token: string) {
   const response = await apiRequest<{ data: InstitutionalTripRecord[] }>('/api/v1/movements/institutional-vehicles/history', {}, token);
+  return response.data;
+}
+
+export async function getMovementHistory(token: string, filters: { from?: string; to?: string; type?: string; state?: string } = {}) {
+  const query = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => { if (value) query.set(key, value); });
+  const suffix = query.size ? `?${query.toString()}` : '';
+  const response = await apiRequest<{ data: MovementHistoryRecord[] }>(`/api/v1/movements/history${suffix}`, {}, token);
   return response.data;
 }
 
