@@ -100,6 +100,7 @@ h2 { margin-bottom: 10px; color: #163243; font-size: 19px; }
 .type-badge.private { color: #7d4c00; background: #fff3d5; }
 .empty-list { padding: 30px 0; color: #647985; text-align: center; }
 .department-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: 12px; padding: 15px 0; border-top: 1px solid #edf1f3; }
+.trips-panel { margin-top: 28px; }.trip-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #edf1f3; }.trip-row > div { min-width: 0; display: flex; flex-direction: column; }.trip-row small { margin-top: 5px; color: #647985; line-height: 1.4; }
 .danger-action { padding: 10px 14px; border: 1px solid #eccaca; border-radius: 9px; color: #9a2e2e; background: #fff; cursor: pointer; font-weight: 750; }
 .danger-action.compact { padding: 7px 10px; font-size: 11px; }
 
@@ -111,6 +112,7 @@ h2 { margin-bottom: 10px; color: #163243; font-size: 19px; }
   .employee-row { grid-template-columns: minmax(130px, 1fr) auto; }.employee-row > div:nth-child(2) { grid-column: 1 / -1; }.employee-row .status-button { grid-column: auto; }
   .vehicle-row { grid-template-columns: minmax(130px, 1fr) auto auto; }.vehicle-row > div:nth-child(2) { grid-column: 1 / -1; }
   .department-row { grid-template-columns: minmax(140px, 1fr) auto auto auto; }
+  .trip-row { grid-template-columns: 1fr 1fr; }.trip-row .type-badge, .trip-row .demo-badge { justify-self: start; }
 }
 
 @media (max-width: 900px) {
@@ -151,6 +153,7 @@ h2 { margin-bottom: 10px; color: #163243; font-size: 19px; }
   .employee-row { grid-template-columns: 1fr 1fr; }.employee-row > div, .employee-row > div:nth-child(2) { grid-column: 1 / -1; }.employee-row .status-button { grid-column: auto; width: 100%; }
   .vehicle-row { grid-template-columns: 1fr 1fr; }.vehicle-row > div, .vehicle-row > div:nth-child(2), .vehicle-row .type-badge { grid-column: 1 / -1; }.vehicle-row .secondary-action, .vehicle-row .status-button { width: 100%; }
   .department-row { grid-template-columns: 1fr 1fr; }.department-row strong { grid-column: 1 / -1; }.department-row button { width: 100%; }
+  .trip-row { grid-template-columns: 1fr; }
   .catalog-search { grid-template-columns: 1fr; }.catalog-search button { width: 100%; }
   .login-page { padding: 16px; }
   .login-card { padding: 30px 24px; }

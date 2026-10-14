@@ -84,6 +84,14 @@ export interface NfcTagRecord {
   updatedAt: string;
 }
 
+export interface InstitutionalTripRecord {
+  id: string; soinNumber: string; destination: string; departureMileage: number; departureFuel: number;
+  departureAt: string; returnMileage: number | null; returnFuel: number | null; returnAt: string | null;
+  vehicle: Pick<InstitutionalVehicleRecord, 'id' | 'plate' | 'assetCode' | 'brand' | 'model'>;
+  driver: Pick<EmployeeRecord, 'id' | 'identification' | 'name' | 'department'>;
+  occupants: Pick<EmployeeRecord, 'id' | 'identification' | 'name' | 'department'>[];
+}
+
 async function apiRequest<T>(path: string, init: RequestInit = {}, token?: string): Promise<T> {
   const headers = new Headers(init.headers);
   if (init.body) headers.set('Content-Type', 'application/json');
@@ -249,4 +257,9 @@ export async function updateNfcTag(token: string, id: string, input: { employeeI
 
 export async function deleteNfcTag(token: string, id: string) {
   await apiRequest<void>(`/api/v1/catalogs/nfc-tags/${id}`, { method: 'DELETE' }, token);
+}
+
+export async function getInstitutionalTrips(token: string) {
+  const response = await apiRequest<{ data: InstitutionalTripRecord[] }>('/api/v1/movements/institutional-vehicles/history', {}, token);
+  return response.data;
 }
