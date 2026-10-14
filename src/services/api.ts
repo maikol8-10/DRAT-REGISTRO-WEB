@@ -98,8 +98,11 @@ async function apiRequest<T>(path: string, init: RequestInit = {}, token?: strin
   if (token) headers.set('Authorization', `Bearer ${token}`);
   const response = await fetch(`${env.apiUrl}${path}`, { ...init, headers });
   if (response.status === 204) return undefined as T;
-  const body = (await response.json()) as { error?: string } & T;
-  if (!response.ok) throw new Error(body.error ?? `La API respondió con estado ${response.status}`);
+  const body = (await response.json()) as { error?: string; details?: { authorizedRoute?: string } } & T;
+  if (!response.ok) {
+    const message = body.error ?? `La API respondió con estado ${response.status}`;
+    throw new Error(body.details?.authorizedRoute ? `${message}. ${body.details.authorizedRoute}.` : message);
+  }
   return body;
 }
 
