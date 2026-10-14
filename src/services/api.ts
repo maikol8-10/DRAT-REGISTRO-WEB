@@ -266,3 +266,8 @@ export async function getInstitutionalTrips(token: string) {
   const response = await apiRequest<{ data: InstitutionalTripRecord[] }>('/api/v1/movements/institutional-vehicles/history', {}, token);
   return response.data;
 }
+
+export async function createMovementContingency(token: string, input: { entityType: 'FUNCIONARIO' | 'VEHICULO_PARTICULAR'; entityId: string; movementType: 'INGRESO' | 'SALIDA'; reason: string }) {
+  const response = await apiRequest<{ data: { createdMovementId: string } }>('/api/v1/movements/contingencies', { method: 'POST', body: JSON.stringify(input) }, token);
+  return response.data;
+}

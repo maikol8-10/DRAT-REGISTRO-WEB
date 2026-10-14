@@ -101,6 +101,7 @@ h2 { margin-bottom: 10px; color: #163243; font-size: 19px; }
 .empty-list { padding: 30px 0; color: #647985; text-align: center; }
 .department-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: 12px; padding: 15px 0; border-top: 1px solid #edf1f3; }
 .trips-panel { margin-top: 28px; }.trip-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; align-items: center; gap: 16px; padding: 17px 0; border-top: 1px solid #edf1f3; }.trip-row > div { min-width: 0; display: flex; flex-direction: column; }.trip-row small { margin-top: 5px; color: #647985; line-height: 1.4; }
+.contingency-form { max-width: 720px; margin-top: 26px; }.contingency-form textarea { min-height: 100px; resize: vertical; }
 .danger-action { padding: 10px 14px; border: 1px solid #eccaca; border-radius: 9px; color: #9a2e2e; background: #fff; cursor: pointer; font-weight: 750; }
 .danger-action.compact { padding: 7px 10px; font-size: 11px; }
 

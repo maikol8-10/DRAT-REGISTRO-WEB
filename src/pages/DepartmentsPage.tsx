@@ -20,7 +20,12 @@ export function DepartmentsPage() {
     finally { setLoading(false); }
   }, [token]);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    getDepartments(token)
+      .then((data) => { setDepartments(data); setError(''); })
+      .catch((reason: unknown) => setError(reason instanceof Error ? reason.message : 'No fue posible cargar los departamentos'))
+      .finally(() => setLoading(false));
+  }, [token]);
 
   async function submit(event: FormEvent) {
     event.preventDefault(); setError(''); setMessage('');
