@@ -2,13 +2,14 @@ import { useCallback, useEffect, useState, type FormEvent } from 'react';
 
 import { useAuth } from '../auth/AuthContext';
 import { AdministrationNav } from '../components/AdministrationNav';
-import { createDepartment, getDepartments, updateDepartment, type DepartmentRecord } from '../services/api';
+import { createDepartment, deleteDepartment, getDepartments, updateDepartment, type DepartmentRecord } from '../services/api';
 
 export function DepartmentsPage() {
   const { session } = useAuth();
   const token = session?.token ?? '';
   const [departments, setDepartments] = useState<DepartmentRecord[]>([]);
   const [name, setName] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -24,9 +25,31 @@ export function DepartmentsPage() {
   async function submit(event: FormEvent) {
     event.preventDefault(); setError(''); setMessage('');
     try {
-      await createDepartment(token, { name });
-      setName(''); setMessage('Departamento creado correctamente.'); await load();
-    } catch (reason) { setError(reason instanceof Error ? reason.message : 'No fue posible crear el departamento'); }
+      if (editingId) {
+        await updateDepartment(token, editingId, { name });
+        setMessage('Departamento actualizado correctamente.');
+      } else {
+        await createDepartment(token, { name });
+        setMessage('Departamento creado correctamente.');
+      }
+      setName(''); setEditingId(null); await load();
+    } catch (reason) { setError(reason instanceof Error ? reason.message : 'No fue posible guardar el departamento'); }
+  }
+
+  function edit(department: DepartmentRecord) {
+    setEditingId(department.id); setName(department.name); setError(''); setMessage('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function remove(department: DepartmentRecord) {
+    if (!window.confirm(`¿Eliminar el departamento ${department.name}?`)) return;
+    setError(''); setMessage('');
+    try {
+      await deleteDepartment(token, department.id);
+      setDepartments((current) => current.filter((item) => item.id !== department.id));
+      if (editingId === department.id) { setEditingId(null); setName(''); }
+      setMessage('Departamento eliminado correctamente.');
+    } catch (reason) { setError(reason instanceof Error ? reason.message : 'No fue posible eliminar el departamento'); }
   }
 
   async function toggle(department: DepartmentRecord) {
@@ -44,9 +67,10 @@ export function DepartmentsPage() {
     <p>Administre las opciones disponibles al registrar y editar funcionarios.</p>
     <div className="users-layout">
       <form className="panel form-grid" onSubmit={submit}>
-        <h2>Crear departamento</h2>
+        <h2>{editingId ? 'Editar departamento' : 'Crear departamento'}</h2>
         <label>Nombre<input value={name} onChange={(event) => setName(event.target.value)} minLength={2} maxLength={120} required /></label>
-        <button className="primary-action" type="submit">Crear departamento</button>
+        <button className="primary-action" type="submit">{editingId ? 'Guardar cambios' : 'Crear departamento'}</button>
+        {editingId && <button className="secondary-action" type="button" onClick={() => { setEditingId(null); setName(''); }}>Cancelar edición</button>}
         {message && <p className="form-success">{message}</p>}
         {error && <p className="form-error" role="alert">{error}</p>}
       </form>
@@ -55,7 +79,9 @@ export function DepartmentsPage() {
         {loading ? <p>Cargando departamentos…</p> : departments.length === 0 ? <p className="empty-list">No hay departamentos registrados.</p> : departments.map((department) =>
           <article className="department-row" key={department.id}>
             <strong>{department.name}</strong>
+            <button className="secondary-action compact" type="button" onClick={() => edit(department)}>Editar</button>
             <button className={department.active ? 'status-button active' : 'status-button'} type="button" onClick={() => void toggle(department)}>{department.active ? 'Activo' : 'Inactivo'}</button>
+            <button className="danger-action compact" type="button" onClick={() => void remove(department)}>Eliminar</button>
           </article>)}
       </div>
     </div>

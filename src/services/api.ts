@@ -144,11 +144,15 @@ export async function createDepartment(token: string, input: { name: string }) {
   return response.data;
 }
 
-export async function updateDepartment(token: string, id: string, input: { active: boolean }) {
+export async function updateDepartment(token: string, id: string, input: { name?: string; active?: boolean }) {
   const response = await apiRequest<{ data: DepartmentRecord }>(`/api/v1/catalogs/departments/${id}`, {
     method: 'PATCH', body: JSON.stringify(input),
   }, token);
   return response.data;
+}
+
+export async function deleteDepartment(token: string, id: string) {
+  await apiRequest<void>(`/api/v1/catalogs/departments/${id}`, { method: 'DELETE' }, token);
 }
 
 export async function createEmployee(
