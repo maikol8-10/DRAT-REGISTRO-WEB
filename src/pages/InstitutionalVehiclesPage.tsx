@@ -90,7 +90,7 @@ export function InstitutionalVehiclesPage() {
           <h2>{editingId ? 'Editar vehículo' : 'Registrar vehículo'}</h2>
           <label>Placa<input value={form.plate} onChange={(event) => setForm({ ...form, plate: event.target.value })} minLength={3} maxLength={15} disabled={editingId !== null} required /></label>
           {editingId && <small>La placa es única y no puede modificarse.</small>}
-          <label>Código patrimonial<input value={form.assetCode} onChange={(event) => setForm({ ...form, assetCode: event.target.value })} minLength={2} maxLength={40} required /></label>
+          <label>Número de activo<input value={form.assetCode} onChange={(event) => setForm({ ...form, assetCode: event.target.value })} minLength={2} maxLength={40} required /></label>
           <label>Marca<input value={form.brand} onChange={(event) => setForm({ ...form, brand: event.target.value })} minLength={2} required /></label>
           <label>Modelo<input value={form.model} onChange={(event) => setForm({ ...form, model: event.target.value })} required /></label>
           <label>Año<input type="number" value={form.year} onChange={(event) => setForm({ ...form, year: event.target.value })} min="1900" max="2100" required /></label>
@@ -103,7 +103,7 @@ export function InstitutionalVehiclesPage() {
         <div className="panel employees-panel">
           <div className="panel-heading"><div><p className="eyebrow">FLOTILLA REGISTRADA</p><h2>Vehículos institucionales</h2></div><span className="demo-badge">{vehicles.length} TOTAL</span></div>
           <form className="catalog-search" onSubmit={(event) => { event.preventDefault(); setLoading(true); void loadVehicles(search); }}>
-            <input aria-label="Buscar vehículos" placeholder="Buscar por placa, código, marca o modelo" value={search} onChange={(event) => setSearch(event.target.value)} />
+            <input aria-label="Buscar vehículos" placeholder="Buscar por placa, número de activo, marca o modelo" value={search} onChange={(event) => setSearch(event.target.value)} />
             <button type="submit">Buscar</button>
           </form>
           {loading ? <p>Cargando vehículos…</p> : vehicles.length === 0 ? <p className="empty-list">No hay vehículos institucionales que mostrar.</p> : vehicles.map((vehicle) => (
