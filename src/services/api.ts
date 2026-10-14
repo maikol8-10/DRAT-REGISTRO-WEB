@@ -69,9 +69,9 @@ export interface PrivateVehicleRecord {
 export interface NfcTagRecord {
   id: string;
   code: string;
-  employeeId: string;
+  employeeId: string | null;
   active: boolean;
-  employee: Pick<EmployeeRecord, 'id' | 'identification' | 'name' | 'department' | 'position' | 'active'>;
+  employee: Pick<EmployeeRecord, 'id' | 'identification' | 'name' | 'department' | 'position' | 'active'> | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -211,7 +211,11 @@ export async function createNfcTag(token: string, input: { code: string; employe
   return response.data;
 }
 
-export async function updateNfcTag(token: string, id: string, input: { employeeId?: string; active?: boolean }) {
+export async function updateNfcTag(token: string, id: string, input: { employeeId?: string | null; active?: boolean }) {
   const response = await apiRequest<{ data: NfcTagRecord }>(`/api/v1/catalogs/nfc-tags/${id}`, { method: 'PATCH', body: JSON.stringify(input) }, token);
   return response.data;
+}
+
+export async function deleteNfcTag(token: string, id: string) {
+  await apiRequest<void>(`/api/v1/catalogs/nfc-tags/${id}`, { method: 'DELETE' }, token);
 }

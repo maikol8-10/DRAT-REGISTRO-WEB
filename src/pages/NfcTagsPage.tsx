@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 
 import { useAuth } from '../auth/AuthContext';
 import { AdministrationNav } from '../components/AdministrationNav';
-import { createNfcTag, getEmployees, getNfcTags, updateNfcTag, type EmployeeRecord, type NfcTagRecord } from '../services/api';
+import { createNfcTag, deleteNfcTag, getEmployees, getNfcTags, updateNfcTag, type EmployeeRecord, type NfcTagRecord } from '../services/api';
 
 const emptyForm = { code: '', employeeId: '' };
 
@@ -41,6 +41,21 @@ export function NfcTagsPage() {
     catch (reason) { setError(reason instanceof Error ? reason.message : 'No fue posible actualizar el TAG'); }
   }
 
+  async function unassign(tag: NfcTagRecord) {
+    setError(''); setMessage('');
+    if (!window.confirm(`¿Desea liberar el TAG ${tag.code} de ${tag.employee?.name}?`)) return;
+    try { await updateNfcTag(token, tag.id, { employeeId: null }); setMessage('TAG liberado. Ahora puede reasignarse o eliminarse si no tiene historial.'); await reload(); }
+    catch (reason) { setError(reason instanceof Error ? reason.message : 'No fue posible liberar el TAG'); }
+  }
+
+  async function remove(tag: NfcTagRecord) {
+    setError(''); setMessage('');
+    if (tag.employeeId) { setError('Primero debe liberar el TAG del funcionario asignado.'); return; }
+    if (!window.confirm(`¿Eliminar definitivamente el TAG ${tag.code}?`)) return;
+    try { await deleteNfcTag(token, tag.id); setMessage('TAG eliminado correctamente.'); await reload(); }
+    catch (reason) { setError(reason instanceof Error ? reason.message : 'No fue posible eliminar el TAG'); }
+  }
+
   return <section className="page employees-page">
     <AdministrationNav />
     <p className="eyebrow">IDENTIFICACIÓN OPERATIVA</p><h1>TAG NFC</h1><p>Asocie códigos NFC únicos con funcionarios activos.</p>
@@ -56,9 +71,11 @@ export function NfcTagsPage() {
       </form>
       <div className="panel employees-panel"><div className="panel-heading"><div><p className="eyebrow">TAGS REGISTRADOS</p><h2>Asociaciones</h2></div><span className="demo-badge">{tags.length} TOTAL</span></div>
         {tags.length === 0 ? <p className="empty-list">No hay TAG NFC registrados.</p> : tags.map((tag) => <article className="employee-row" key={tag.id}>
-          <div><strong>{tag.code}</strong><small>Identificador NFC</small></div><div><strong>{tag.employee?.name}</strong><small>{tag.employee?.identification}</small></div>
-          <button className="secondary-action compact" type="button" onClick={() => { setEditingId(tag.id); setForm({ code: tag.code, employeeId: tag.employeeId }); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Editar</button>
-          <button className={tag.active ? 'status-button active' : 'status-button'} type="button" onClick={() => void toggle(tag)}>{tag.active ? 'Activo' : 'Inactivo'}</button>
+          <div><strong>{tag.code}</strong><small>Identificador NFC</small></div><div><strong>{tag.employee?.name ?? 'Sin asignar'}</strong><small>{tag.employee?.identification ?? 'Disponible para asignación'}</small></div>
+          <button className="secondary-action compact" type="button" onClick={() => { setEditingId(tag.id); setForm({ code: tag.code, employeeId: tag.employeeId ?? '' }); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>{tag.employeeId ? 'Reasignar' : 'Asignar'}</button>
+          {tag.employeeId && <button className="secondary-action compact" type="button" onClick={() => void unassign(tag)}>Liberar</button>}
+          <button className={tag.active ? 'status-button active' : 'status-button'} type="button" disabled={!tag.employeeId} title={!tag.employeeId ? 'Asigne un funcionario antes de activar el TAG' : undefined} onClick={() => void toggle(tag)}>{tag.active ? 'Activo' : 'Inactivo'}</button>
+          <button className="secondary-action compact" type="button" disabled={Boolean(tag.employeeId)} title={tag.employeeId ? 'Primero debe liberar el TAG' : 'Eliminar TAG'} onClick={() => void remove(tag)}>Eliminar</button>
         </article>)}
       </div>
     </div>
