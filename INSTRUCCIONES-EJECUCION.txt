@@ -1,0 +1,41 @@
+SICAF - INSTRUCCIONES PARA EJECUTAR EL PANEL WEB
+================================================
+
+Requisitos:
+- Node.js 22.13 o superior.
+- La API SICAF y PostgreSQL deben estar ejecutándose.
+
+1. Abrir PowerShell en el repositorio:
+
+   cd C:\ruta\donde\descargo\DRAT-REGISTRO-WEB
+
+2. Instalar dependencias:
+
+   npm.cmd install
+
+3. Crear la configuración local:
+
+   Copy-Item .env.example .env
+
+4. Verificar que .env apunte a la API:
+
+   VITE_API_URL=http://localhost:3000
+
+5. Iniciar el panel:
+
+   npm.cmd run dev
+
+6. Abrir la dirección mostrada por Vite, normalmente:
+
+   http://localhost:5173
+
+Para detenerlo, presione Ctrl+C.
+
+Validaciones opcionales:
+
+   npm.cmd run lint
+   npm.cmd test
+   npm.cmd run build
+
+Si el inicio de sesión muestra "Failed to fetch", compruebe primero
+http://localhost:3000/health y la variable VITE_API_URL.
